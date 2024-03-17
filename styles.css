@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
