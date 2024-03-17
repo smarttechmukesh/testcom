@@ -1,7 +1,4 @@
 <?php
-// Include CssMin library
-require_once 'cssmin.php';
-
 // Validate form input
 if (!empty($_POST['css_code'])) {
     $css_code = $_POST['css_code'];
@@ -10,7 +7,7 @@ if (!empty($_POST['css_code'])) {
     $pattern = '/^(?!\/\*)(?:[^\/\{]++|\/\/.)*?(?:\{(?:[^}]++|\/\*.*?\*\/)++\})*$/s';
     if (preg_match($pattern, $css_code)) {
         // Compress CSS
-        $compressed_css = CssMin::minify($css_code);
+        $compressed_css = compressCss($css_code);
 
         // Output compressed CSS
         echo '<!DOCTYPE html>
@@ -34,5 +31,21 @@ if (!empty($_POST['css_code'])) {
 } else {
     header('Location: index.html?error=Please enter CSS code.');
     exit;
+}
+
+function compressCss($css) {
+    // Remove comments
+    $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
+
+    // Remove whitespace
+    $css = str_replace(["\r\n", "\r", "\n", "\t", '  ', '    ', '     '], '', $css);
+
+    // Remove extra spaces
+    $css = preg_replace('/\s+/', ' ', $css);
+
+    // Remove last semicolon from the last property
+    $css = str_replace(';}', '}', $css);
+
+    return trim($css);
 }
 ?>
